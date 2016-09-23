@@ -24,9 +24,9 @@ class Cleaner:
 class Calculator:
 
     @staticmethod
-    def list_recurse(path):
+    def list_recurse():
         results = []
-        for root, subFolders, files in os.walk(path):
+        for root, subFolders, files in os.walk(sys.argv[1]):
 
             for result_file in files:
                 file_path = os.path.join(root, result_file)
@@ -41,14 +41,14 @@ class Calculator:
         for archive in archive_list:
             modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(archive))
             duration = datetime.datetime.today() - modified_date
-
             if older_than <= duration.days <= younger_than:
                 results.append(archive)
         return results[::step]
 
     @staticmethod
-    def calculator(recursive_archive_dir, cleaning_options):
+    def calculator(cleaning_options):
         results = []
+        recursive_archive_dir = Calculator.list_recurse()
         cleaning_options = cleaning_options.sort(key=lambda n: n.split(',')[0])
         for index, option in cleaning_options:
             older_than = option.split(',')[0]
@@ -64,17 +64,15 @@ class Calculator:
 
 def main():
 
-    archive_dir = Calculator.list_recurse(sys.argv[1])
     cleaning_options = sys.argv[2:]
-
-    if len(cleaning_options) == 0:
+    if len(cleaning_options) <= 0:
         print("After providing the archive directory, you must also provide the cleaning options.")
         print("E.g. python cleaner.py /path/to/archive 30,2 90,3.")
         print("The example provided will keep every other archive older than "
               "30 days old and every 3 archives older than 90 days.")
         exit()
 
-    results = Calculator.calculator(archive_dir, cleaning_options)
+    results = Calculator.calculator(cleaning_options)
     if len(results) > 0:
         Cleaner.clean(results)
     else:
