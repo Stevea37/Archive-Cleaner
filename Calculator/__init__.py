@@ -8,13 +8,11 @@ class Calculator(object):
         if len(options) <= 0:
             print("After providing the archive directory, you must also provide the cleaning options.")
             print("E.g. python cleaner.py /path/to/archive 30,2 90,3.")
-            print("The example provided will keep every other archive older than "
-                  "30 days old and every 3 archives older than 90 days.")
+            print("The example provided will keep an archive every other day older than "
+                  "30 days old and and archive every 3 days older than 90 days.")
             exit()
-
         self.options = options
-        self.options = options.sort(key=lambda n: n.split(',')[0])
-
+        self.options.sort(key=lambda n: n.split(',')[0])
         if path is None:
             ValueError('Please specify a path')
         self.path = path
@@ -58,7 +56,7 @@ class Calculator(object):
                     continue
                 this_time = datetime.fromtimestamp(os.path.getmtime(archive))
                 last_time = datetime.fromtimestamp(os.path.getmtime(self.archives[module][last_index]))
-                if (this_time - last_time) <= timedelta(days=step):
+                if (this_time - last_time) < timedelta(seconds=step):
                     category_results.append(archive)
                 else:
                     last_index = index
@@ -66,15 +64,25 @@ class Calculator(object):
         return results
 
     def calculate(self):
-        results = []
+        results = {'keep': [], 'remove': []}
         for index, option in enumerate(self.options):
-            print(option)
-            min_age = option.split(',')[0]
-            if index < len(self.options):
-                max_age = self.options[index + 1].split(',')[0]
+            min_age = int(option.split(',')[0])
+            if index < (len(self.options) - 1):
+                max_age = int(self.options[index + 1].split(',')[0])
+            elif index == (len(self.options) - 1):
+                max_age = float("inf")
             else:
                 max_age = 0
-            step = option.split(',')[1]
+            step = int(option.split(',')[1])
             matched_archives = self.match_archives(max_age, min_age, step)
-            results.extend(matched_archives)
+            results['remove'].extend(matched_archives)
+        for archive in self.list_archives():
+            if archive not in results['remove']:
+                results['keep'].append(archive)
+        keep_order = {}
+        keep_count = 0
+        for module in self.archives:
+            keep_order[module] = keep_count
+            keep_count += 1
+        results['keep'].sort(key=lambda n: keep_order[os.path.basename(n).split('-')[0]])
         return results
