@@ -22,3 +22,6 @@ The format of backups this script takes is BACKUP_SET-VERSION.
   
 -o [OPTIONS [OPTIONS ...]], --options [OPTIONS [OPTIONS ...]]
 * Your age threshold and desired interval size separated by a colon
+
+-f, --force
+* Automatically confirms that you want to delete.

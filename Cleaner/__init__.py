@@ -26,6 +26,9 @@ class Cleaner(object):
                   ' (125% of the specified interval).')
         if self.proceed_cleaning:
             confirm_delete = raw_input('Are you sure you want to delete the archives listed above? (y/n): ')
+            if self.calc.force:
+                confirm_delete = 'y'
+
             if confirm_delete.lower() == 'y':
                 for archive in self.calc.results['remove']:
                     os.remove(archive)

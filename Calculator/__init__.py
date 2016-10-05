@@ -4,13 +4,14 @@ from datetime import datetime, timedelta
 
 class Calculator(object):
 
-    def __init__(self, path, options):
+    def __init__(self, path, options, force):
         if len(options) <= 0:
             print("After providing the archive directory, you must also provide the cleaning options.")
             print("E.g. python cleaner.py -p /path/to/archive -o 3:4 7:7.")
             print("The example provided will keep an archive from every 4th day older than "
                   "3 days old and archive every 7 days if it's more than a week old.")
             exit()
+        self.force = force
         self.compromised_interval = False
         self.options = options
         self.options.sort(key=lambda n: n.split(':')[0])
