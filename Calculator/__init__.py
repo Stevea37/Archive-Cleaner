@@ -11,12 +11,14 @@ class Calculator(object):
             print("The example provided will keep an archive every other day older than "
                   "30 days old and and archive every 3 days older than 90 days.")
             exit()
+        self.compromised_interval = False
         self.options = options
         self.options.sort(key=lambda n: n.split(',')[0])
         if path is None:
             ValueError('Please specify a path')
         self.path = path
         self.archives = self.categorise_archives()
+        self.results = {}
 
     def list_archives(self):
         results = []
@@ -56,8 +58,14 @@ class Calculator(object):
                     continue
                 this_time = datetime.fromtimestamp(os.path.getmtime(archive))
                 last_time = datetime.fromtimestamp(os.path.getmtime(self.archives[module][last_index]))
-                if (this_time - last_time) < timedelta(seconds=step):
-                    category_results.append(archive)
+                if (index + 1) < len(self.archives[module]):
+                    next_time = datetime.fromtimestamp(os.path.getmtime(self.archives[module][index + 1]))
+                if (this_time - last_time) < timedelta(days=step * 0.90):
+                    if (next_time - last_time) >= timedelta(days=(step * 1.25)):
+                        last_index = index
+                        self.compromised_interval = True
+                    else:
+                        category_results.append(archive)
                 else:
                     last_index = index
             results.extend(category_results)
@@ -85,4 +93,4 @@ class Calculator(object):
             keep_order[module] = keep_count
             keep_count += 1
         results['keep'].sort(key=lambda n: keep_order[os.path.basename(n).split('-')[0]])
-        return results
+        self.results = results

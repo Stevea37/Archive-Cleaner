@@ -5,11 +5,10 @@ from Cleaner import *
 
 def main():
     calc = Calculator(sys.argv[1], sys.argv[2:])
-    results = calc.calculate()
+    calc.calculate()
 
-    cleaner = Cleaner(results)
+    cleaner = Cleaner(calc)
     cleaner.clean()
-
 
 if __name__ == '__main__':
     main()
