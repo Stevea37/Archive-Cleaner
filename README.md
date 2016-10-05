@@ -14,8 +14,8 @@ The example provided will keep an archive from every 4th day if it's more than 3
 
 The format of backups this script takes is BACKUP_SET-VERSION.
 
--h, --helps
-* how this help message and exit
+-h, --help
+* show this help message and exit
   
 -p ROOT_PATH, --root-path ROOT_PATH
 * The root path of your backups.
