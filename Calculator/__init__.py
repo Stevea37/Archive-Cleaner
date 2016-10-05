@@ -7,13 +7,13 @@ class Calculator(object):
     def __init__(self, path, options):
         if len(options) <= 0:
             print("After providing the archive directory, you must also provide the cleaning options.")
-            print("E.g. python cleaner.py /path/to/archive 30,2 90,3.")
-            print("The example provided will keep an archive every other day older than "
-                  "30 days old and and archive every 3 days older than 90 days.")
+            print("E.g. python cleaner.py -p /path/to/archive -o 3:4 7:7.")
+            print("The example provided will keep an archive from every 4th day older than "
+                  "3 days old and archive every 7 days if it's more than a week old.")
             exit()
         self.compromised_interval = False
         self.options = options
-        self.options.sort(key=lambda n: n.split(',')[0])
+        self.options.sort(key=lambda n: n.split(':')[0])
         if path is None:
             ValueError('Please specify a path')
         self.path = path
@@ -74,14 +74,14 @@ class Calculator(object):
     def calculate(self):
         results = {'keep': [], 'remove': []}
         for index, option in enumerate(self.options):
-            min_age = int(option.split(',')[0])
+            min_age = int(option.split(':')[0])
             if index < (len(self.options) - 1):
-                max_age = int(self.options[index + 1].split(',')[0])
+                max_age = int(self.options[index + 1].split(':')[0])
             elif index == (len(self.options) - 1):
                 max_age = float("inf")
             else:
                 max_age = 0
-            step = int(option.split(',')[1])
+            step = int(option.split(':')[1])
             matched_archives = self.match_archives(max_age, min_age, step)
             results['remove'].extend(matched_archives)
         for archive in self.list_archives():
