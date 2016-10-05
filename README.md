@@ -14,10 +14,6 @@ The example provided will keep an archive from every 4th day if it's more than 3
 
 The format of backups this script takes is BACKUP_SET-VERSION.
 
-optional arguments:
-  -h, --help            show this help message and exit
-  -p ROOT_PATH, --root-path ROOT_PATH
-                        The root path of your backups.
-  -o [OPTIONS [OPTIONS ...]], --options [OPTIONS [OPTIONS ...]]
-                        Your age threshold and desired interval size separated
-                        by a colon
+  -h, --help    show this help message and exit
+  -p ROOT_PATH, --root-path ROOT_PATH   The root path of your backups.
+  -o [OPTIONS [OPTIONS ...]], --options [OPTIONS [OPTIONS ...]] Your age threshold and desired interval size separated by a colon
