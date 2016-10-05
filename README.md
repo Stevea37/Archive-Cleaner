@@ -4,7 +4,7 @@ Clean up backup archives
 THIS SCRIPT DELETES BACKUP FILES TO INCREASE THE INTERVAL BETWEEN DATA SNAPSHOTS, FOR SPACE SAVING PURPOSES.
 
 $ python cleaner.py --help
-usage: cleaner.py [-h] -p ROOT_PATH -o [OPTIONS [OPTIONS ...]]
+usage: cleaner.py [-h] -p ROOT_PATH -o [OPTIONS [OPTIONS ...]] [-f]
 
 Cleans up old backups to leave more room on the backup server.
 
