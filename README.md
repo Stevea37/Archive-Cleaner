@@ -28,3 +28,6 @@ The format of backups this script takes is BACKUP_SET-VERSION.
 
 -f, --force
 * Automatically confirms that you want to delete.
+
+
+http://10.102.81.194:8081/nexus/content/repositories/thirdparty/sensu
