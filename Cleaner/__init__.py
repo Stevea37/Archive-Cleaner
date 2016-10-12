@@ -25,8 +25,9 @@ class Cleaner(object):
             print('One or more archives cannot be deleted as the interval left would be too far over the threshold'
                   ' (125% of the specified interval).')
         if self.proceed_cleaning:
-            confirm_delete = raw_input('Are you sure you want to delete the archives listed above? (y/n): ')
-            if self.calc.force:
+            if not self.calc.force:
+                confirm_delete = raw_input('Are you sure you want to delete the archives listed above? (y/n): ')
+            else:
                 confirm_delete = 'y'
 
             if confirm_delete.lower() == 'y':
